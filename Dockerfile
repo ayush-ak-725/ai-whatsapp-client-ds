@@ -53,7 +53,7 @@ pipe = pipeline('text-generation', model=model_id)
 pipe('hello', max_length=5)
 print('Preloaded Hugging Face model:', model_id)
 PY
-    ; fi
+    fi
 
 # Copy application code
 COPY . /app
