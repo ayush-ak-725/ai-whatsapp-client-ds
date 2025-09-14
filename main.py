@@ -160,25 +160,7 @@ async def info():
     }
 
 
-# Dependency injection
-def get_conversation_service() -> ConversationService:
-    """Get conversation service dependency"""
-    return app.state.conversation_service
-
-
-def get_character_service() -> CharacterService:
-    """Get character service dependency"""
-    return app.state.character_service
-
-
-def get_llm_service() -> LLMService:
-    """Get LLM service dependency"""
-    return app.state.llm_service
-
-
-def get_vector_service() -> VectorService:
-    """Get vector service dependency"""
-    return app.state.vector_service
+# Dependency injection functions moved to app.api.v1.dependencies
 
 
 if __name__ == "__main__":

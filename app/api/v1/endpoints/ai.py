@@ -4,8 +4,10 @@ AI endpoints for response generation
 
 from fastapi import APIRouter, Depends, HTTPException
 from app.models.conversation import ConversationContext, AIResponse
+from app.api.v1.dependencies import get_conversation_service, get_llm_service
 from app.services.conversation_service import ConversationService
-from main import get_conversation_service
+from app.services.llm_service import LLMService
+# from main import get_conversation_service, get_llm_service
 
 router = APIRouter()
 
@@ -66,6 +68,9 @@ async def get_available_models(
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get models: {str(e)}")
+
+
+
 
 
 

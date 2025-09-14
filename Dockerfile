@@ -1,58 +1,65 @@
-FROM python:3.11-slim AS builder
+FROM python:3.11-slim
 
+# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
+# Set working directory
 WORKDIR /app
 
-# System deps required during build (for wheels)
+# Install system dependencies
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc g++ curl && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y \
+        gcc \
+        g++ \
+        gfortran \
+        libopenblas-dev \
+        liblapack-dev \
+        pkg-config \
+        libhdf5-dev \
+        libffi-dev \
+        libssl-dev \
+        curl \
+        && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt ./
-RUN python -m pip install --upgrade pip setuptools wheel && \
-    pip wheel --no-cache-dir --wheel-dir /wheels -r requirements.txt
+# Copy requirements first for better caching
+COPY requirements.txt .
 
-
-FROM python:3.11-slim
-
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    PATH="/home/appuser/.local/bin:$PATH"
-
-WORKDIR /app
-
-# Runtime-only dependencies
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl && \
-    rm -rf /var/lib/apt/lists/*
-
-# Install python deps from prebuilt wheels
-COPY --from=builder /wheels /wheels
-COPY requirements.txt ./
-RUN pip install --no-index --find-links=/wheels -r requirements.txt && \
-    rm -rf /wheels
+# Install Python dependencies
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
-COPY . /app
+COPY . .
 
-# Create non-root user
-RUN useradd -m -u 10001 appuser && \
-    mkdir -p /app/logs && \
-    chown -R appuser:appuser /app
-USER appuser
+# Create necessary directories
+RUN mkdir -p logs && \
+    mkdir -p /app/data && \
+    mkdir -p /app/cache
+
+# Set proper permissions
+RUN chmod -R 755 /app
+
+# Create non-root user for security
+RUN useradd --create-home --shell /bin/bash app && \
+    chown -R app:app /app
+USER app
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
 
 # Expose port
 EXPOSE 8000
 
-# Lightweight healthcheck
-HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
-  CMD curl -fsS http://127.0.0.1:${PORT:-8000}/api/v1/health || exit 1
+# Run the application with proper configuration
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "--log-level", "info"]
 
-# Run the application (configurable via env)
-CMD sh -c "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${UVICORN_WORKERS:-1} --proxy-headers"
+
+
+
+
+

@@ -1,31 +1,89 @@
-__pycache__
+# Python
+__pycache__/
 *.py[cod]
-*.pyo
-*.pyd
+*$py.class
 *.so
-*.egg-info
-.eggs/
-.pytest_cache/
-.mypy_cache/
-.cache/
-venv/
-.env
-.env.*
-.git
-.gitignore
-.idea/
-.vscode/
-.DS_Store
-logs/
-
-# Build artifacts
+.Python
 build/
+develop-eggs/
 dist/
-node_modules/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Hugging Face cache (mounted at runtime instead)
-home/appuser/.cache/huggingface
-/root/.cache/huggingface
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Documentation
+docs/_build/
+.readthedocs.yml
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Git
+.git/
+.gitignore
 
 # Docker
 Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Cache
+.cache/
+.pytest_cache/
+
+# Temporary files
+*.tmp
+*.temp

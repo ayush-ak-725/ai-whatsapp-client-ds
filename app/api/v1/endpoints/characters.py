@@ -7,7 +7,7 @@ from typing import List, Optional
 from uuid import UUID
 from app.models.conversation import Character
 from app.services.character_service import CharacterService
-from main import get_character_service
+from app.api.v1.dependencies import get_character_service
 
 router = APIRouter()
 
@@ -125,6 +125,9 @@ async def add_character_memory(
     """
     await character_service.add_character_memory(character_id, content, memory_type, importance_score)
     return {"message": "Memory added successfully"}
+
+
+
 
 
 

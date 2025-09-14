@@ -7,7 +7,7 @@ from app.services.conversation_service import ConversationService
 from app.services.character_service import CharacterService
 from app.services.llm_service import LLMService
 from app.services.vector_service import VectorService
-from main import get_conversation_service, get_character_service, get_llm_service, get_vector_service
+from app.api.v1.dependencies import get_conversation_service, get_character_service, get_llm_service, get_vector_service
 
 router = APIRouter()
 
@@ -43,6 +43,9 @@ async def detailed_health_check(
         "status": "healthy" if all_healthy else "unhealthy",
         "services": services_status
     }
+
+
+
 
 
 

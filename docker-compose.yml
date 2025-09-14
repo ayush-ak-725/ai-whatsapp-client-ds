@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  ai-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bakchod-ai-backend
+    ports:
+      - "8000:8000"
+    environment:
+      # Application settings
+      - DEBUG=false
+      - LOG_LEVEL=INFO
+      - HOST=0.0.0.0
+      - PORT=8000
+      
+      # CORS settings
+      - ALLOWED_ORIGINS=http://localhost:3000,http://localhost:8080
+      
+      # LLM API Keys (set these in your .env file or override here)
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY:-}
+      
+      # Pinecone settings
+      - PINECONE_API_KEY=${PINECONE_API_KEY:-}
+      - PINECONE_ENVIRONMENT=${PINECONE_ENVIRONMENT:-us-east-1}
+      - PINECONE_INDEX_NAME=${PINECONE_INDEX_NAME:-bakchod-ai-whatsapp}
+      
+      # Redis settings
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      
+      # Conversation settings
+      - MAX_CONVERSATION_HISTORY=${MAX_CONVERSATION_HISTORY:-50}
+      - MAX_RESPONSE_LENGTH=${MAX_RESPONSE_LENGTH:-500}
+      - RESPONSE_TIMEOUT=${RESPONSE_TIMEOUT:-30}
+      
+      # Character settings
+      - CHARACTER_EMBEDDING_DIMENSION=${CHARACTER_EMBEDDING_DIMENSION:-768}
+      - MAX_CHARACTERS_PER_GROUP=${MAX_CHARACTERS_PER_GROUP:-10}
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+      - ./cache:/app/cache
+    depends_on:
+      - redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  redis:
+    image: redis:7-alpine
+    container_name: bakchod-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+volumes:
+  redis_data:
