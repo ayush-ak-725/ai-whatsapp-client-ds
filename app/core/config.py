@@ -31,6 +31,10 @@ class Settings(BaseSettings):
     ANTHROPIC_API_KEY: str = Field(default="", env="ANTHROPIC_API_KEY")
     HUGGINGFACE_API_KEY: str = Field(default="", env="HUGGINGFACE_API_KEY")
     
+    # LLM model/provider toggles
+    GEMINI_MODEL: str = Field(default="gemini-pro", env="GEMINI_MODEL")
+    ENABLE_HF_PROVIDER: bool = Field(default=False, env="ENABLE_HF_PROVIDER")
+    
     # Pinecone settings
     PINECONE_API_KEY: str = Field(default="", env="PINECONE_API_KEY")
     PINECONE_ENVIRONMENT: str = Field(default="us-east-1", env="PINECONE_ENVIRONMENT")

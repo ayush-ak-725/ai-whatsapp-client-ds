@@ -38,7 +38,7 @@ class GeminiProvider(LLMProvider):
     
     def __init__(self):
         self.api_key = settings.GEMINI_API_KEY
-        self.model = "gemini-pro"
+        self.model = settings.GEMINI_MODEL or "gemini-pro"
         self._client = None
     
     async def initialize(self):
@@ -335,14 +335,15 @@ class LLMService:
             except Exception as e:
                 logger.warning("Failed to initialize Anthropic provider", error=str(e))
         
-        # Always try to initialize Hugging Face as fallback
-        try:
-            provider = HuggingFaceProvider()
-            await provider.initialize()
-            self.providers.append(provider)
-            logger.info("Hugging Face provider added")
-        except Exception as e:
-            logger.warning("Failed to initialize Hugging Face provider", error=str(e))
+        # Optionally initialize Hugging Face as a fallback
+        if settings.ENABLE_HF_PROVIDER:
+            try:
+                provider = HuggingFaceProvider()
+                await provider.initialize()
+                self.providers.append(provider)
+                logger.info("Hugging Face provider added")
+            except Exception as e:
+                logger.warning("Failed to initialize Hugging Face provider", error=str(e))
         
         if not self.providers:
             raise RuntimeError("No LLM providers could be initialized")

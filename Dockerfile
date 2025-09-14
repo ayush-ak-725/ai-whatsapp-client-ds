@@ -24,7 +24,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     HF_HOME=/home/appuser/.cache/huggingface \
-    PATH="/home/appuser/.local/bin:$PATH"
+    PATH="/home/appuser/.local/bin:$PATH" \
+    ENABLE_HF_PROVIDER=0 \
+    GEMINI_MODEL=gemini-pro
 
 WORKDIR /app
 
