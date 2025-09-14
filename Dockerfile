@@ -52,7 +52,7 @@ model_id = os.getenv('HF_MODEL_ID', 'microsoft/DialoGPT-medium')
 pipe = pipeline('text-generation', model=model_id)
 pipe('hello', max_length=5)
 print('Preloaded Hugging Face model:', model_id)
-PY
+PY \
     fi
 
 # Copy application code
