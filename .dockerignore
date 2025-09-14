@@ -1,0 +1,31 @@
+__pycache__
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.cache/
+venv/
+.env
+.env.*
+.git
+.gitignore
+.idea/
+.vscode/
+.DS_Store
+logs/
+
+# Build artifacts
+build/
+dist/
+node_modules/
+
+# Hugging Face cache (mounted at runtime instead)
+home/appuser/.cache/huggingface
+/root/.cache/huggingface
+
+# Docker
+Dockerfile*
