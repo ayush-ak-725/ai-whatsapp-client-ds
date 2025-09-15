@@ -38,7 +38,7 @@ class GeminiProvider(LLMProvider):
 
     def __init__(self):
         self.api_key = settings.GEMINI_API_KEY
-        self.model = "gemini-pro"
+        self.model = "gemini-1.5-flash"
         self._client = None
 
     async def initialize(self):
@@ -97,7 +97,7 @@ class OpenAIProvider(LLMProvider):
 
     def __init__(self):
         self.api_key = settings.OPENAI_API_KEY
-        self.model = "gpt-4"
+        self.model = "gpt-4o-mini"
         self._client = None
 
     async def initialize(self):
