@@ -27,13 +27,13 @@ class Settings(BaseSettings):
     )
     
     # LLM API Keys
-    OPENAI_API_KEY: str = Field(default="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", env="OPENAI_API_KEY")
-    GEMINI_API_KEY: str = Field(default="AIzaSyDnpNCO2Jx62z5KryTlY4rJpI1q4w28_UM", env="GEMINI_API_KEY")
+    OPENAI_API_KEY: str = Field(default="", env="OPENAI_API_KEY")
+    GEMINI_API_KEY: str = Field(default="", env="GEMINI_API_KEY")
     ANTHROPIC_API_KEY: str = Field(default="", env="ANTHROPIC_API_KEY")
     HUGGINGFACE_API_KEY: str = Field(default="", env="HUGGINGFACE_API_KEY")
     
     # Pinecone settings
-    PINECONE_API_KEY: str = Field(default="pcsk_2jWKXs_DUiUq7WWBGj9iTd5GL19wHcTZM8MvD3TBhzBvNvn2CrpF4zSgydeK58PFRw8CUi", env="PINECONE_API_KEY")
+    PINECONE_API_KEY: str = Field(default="", env="PINECONE_API_KEY")
     PINECONE_ENVIRONMENT: str = Field(default="us-east-1", env="PINECONE_ENVIRONMENT")
     PINECONE_INDEX_NAME: str = Field(default="bakchod-ai-whatsapp", env="PINECONE_INDEX_NAME")
     
