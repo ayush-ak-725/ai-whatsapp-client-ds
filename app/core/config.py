@@ -5,7 +5,7 @@ Configuration settings for the AI Backend service
 import os
 from typing import List
 from pydantic_settings import BaseSettings
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class Settings(BaseSettings):
@@ -27,13 +27,13 @@ class Settings(BaseSettings):
     )
     
     # LLM API Keys
-    OPENAI_API_KEY: str = Field(default="", env="OPENAI_API_KEY")
-    GEMINI_API_KEY: str = Field(default="", env="GEMINI_API_KEY")
+    OPENAI_API_KEY: str = Field(default="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", env="OPENAI_API_KEY")
+    GEMINI_API_KEY: str = Field(default="AIzaSyA1fjhcCdRA2BOB3cuRCp0FK5mI9vUib_w", env="GEMINI_API_KEY")
     ANTHROPIC_API_KEY: str = Field(default="", env="ANTHROPIC_API_KEY")
     HUGGINGFACE_API_KEY: str = Field(default="", env="HUGGINGFACE_API_KEY")
     
     # Pinecone settings
-    PINECONE_API_KEY: str = Field(default="", env="PINECONE_API_KEY")
+    PINECONE_API_KEY: str = Field(default="pcsk_2nT36o_BsHcm5X53MdAyEFXEMJRnRgpJqZ5iUuyazZ2KhVvHKMBLhkhP14bgncuseLefRr", env="PINECONE_API_KEY")
     PINECONE_ENVIRONMENT: str = Field(default="us-east-1", env="PINECONE_ENVIRONMENT")
     PINECONE_INDEX_NAME: str = Field(default="bakchod-ai-whatsapp", env="PINECONE_INDEX_NAME")
     
@@ -53,6 +53,14 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = Field(default="INFO", env="LOG_LEVEL")
     LOG_FORMAT: str = Field(default="json", env="LOG_FORMAT")
     
+    @field_validator('PINECONE_API_KEY')
+    @classmethod
+    def validate_pinecone_api_key(cls, v):
+        # If the value is empty or None, use the default
+        if not v or v.strip() == "":
+            return "pcsk_2nT36o_BsHcm5X53MdAyEFXEMJRnRgpJqZ5iUuyazZ2KhVvHKMBLhkhP14bgncuseLefRr"
+        return v
+
     class Config:
         env_file = ".env"
         case_sensitive = True

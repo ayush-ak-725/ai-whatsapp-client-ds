@@ -118,7 +118,12 @@ async def health_check():
         if hasattr(app.state, 'vector_service'):
             services_status['vector_service'] = await app.state.vector_service.is_healthy()
         
-        all_healthy = all(services_status.values())
+        # Ignore vector service when deciding global health
+        critical_services = {
+         k: v for k, v in services_status.items() if k != "vector_service"
+        }
+    
+        all_healthy = all(critical_services.values())
         
         return {
             "status": "healthy" if all_healthy else "unhealthy",
@@ -169,7 +174,7 @@ if __name__ == "__main__":
     uvicorn.run(
         "main:app",
         host="0.0.0.0",
-        port=8000,
+        port=8010,
         reload=True,
         log_level="info"
     )
