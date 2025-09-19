@@ -30,9 +30,11 @@
 # isort==5.12.0
 # flake8==6.1.0
 # mypy==1.7.1
-setuptools>=65.5.0
-wheel
-packaging
+pip>=23.3
+setuptools>=68.0.0
+wheel>=0.41.0
+packaging>=23.1
+numpy==1.26.4
 # Core backend
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
@@ -44,7 +46,7 @@ python-dotenv==1.0.0
 
 # Vector database & embeddings
 pinecone-client==2.2.4
-numpy==1.24.3
+#numpy==1.24.3
 pandas==2.1.4
 
 # LLM APIs
